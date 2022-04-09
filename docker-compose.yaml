@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+
+    demo_django:
+        container_name: demo_django
+        image: demo_django_parent  # Родительский образ
+        build:
+            context: ./  # Контекст Dockerfile-файла текущего расположения yaml-файл ( )
+            dockerfile: ./django_parent.Dockerfile  # Файл для сборки родительского образа
+#        restart: always
+        networks:
+           - demo_lan
+        ports:
+            - 8000:8000  # Хосты -> В этот контейнер
+        volumes:
+            - .:/root/
+        command: bash -c
+            '
+            echo --- run django --- &&
+            python3 /root/manage.py runserver 0.0.0.0:8000
+            '
+networks:
+    demo_lan:
